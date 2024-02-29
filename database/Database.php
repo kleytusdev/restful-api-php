@@ -3,6 +3,7 @@
 namespace Database;
 
 use PDO;
+use Dotenv\Dotenv;
 
 class Database
 {
@@ -10,11 +11,14 @@ class Database
 
   private static function getCredentials(): array
   {
+    $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+    $dotenv->load();
+
     return [
-      'host' => getenv('DB_HOST'),
-      'database' => getenv('DB_DATABASE'),
-      'username' => getenv('DB_USERNAME'),
-      'password' => getenv('DB_PASSWORD'),
+      'host'     => $_ENV['DB_HOST'],
+      'database' => $_ENV['DB_DATABASE'],
+      'username' => $_ENV['DB_USERNAME'],
+      'password' => $_ENV['DB_PASSWORD'],
     ];
   }
 
@@ -22,7 +26,6 @@ class Database
   {
     if (!self::$connection) {
       $config = self::getCredentials();
-      var_dump($config);
       self::$connection = new PDO(
         "mysql:host={$config['host']};dbname={$config['database']}",
         $config['username'],
