@@ -21,7 +21,7 @@ class Product
 
       return json_encode($result->fetchAll(PDO::FETCH_ASSOC));
     } catch (PDOException $e) {
-      return json_encode(["error" => "Error fetching products {$e->getMessage()}"]);
+      return json_encode(["error" => "Error al obtener los productos {$e->getMessage()}"]);
     }
   }
 }

@@ -2,6 +2,7 @@
   "conventionalCommits.scopes": [
     "config",
     "global",
-    "dependencies"
+    "dependencies",
+    "validation"
   ]
 }

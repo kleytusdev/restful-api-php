@@ -4,7 +4,7 @@ namespace App\Utils;
 
 class ValidateHttpMethod
 {
-  public static function validateHttpMethod(string $httpMethod)
+  public static function validateHttpMethod(string $httpMethod): void
   {
     if ($_SERVER['REQUEST_METHOD'] !== $httpMethod) {
       http_response_code(405);
