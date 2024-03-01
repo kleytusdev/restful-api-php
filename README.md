@@ -2,4 +2,4 @@
 - composer install
 
 # Duplicar la variable de entorno de ejemplo a una local
-- cp env.example .env
+- cp .env.example .env
