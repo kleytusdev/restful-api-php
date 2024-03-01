@@ -3,6 +3,7 @@
     "config",
     "global",
     "dependencies",
-    "validation"
+    "validation",
+    "category"
   ]
 }

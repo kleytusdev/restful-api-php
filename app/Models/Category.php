@@ -34,10 +34,10 @@ class Category
 
     try {
       $query = "UPDATE categories SET name = :newName WHERE id = :id";
-      $stmt = Database::getConnection()->prepare($query);
-      $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-      $stmt->bindParam(':newName', $newName, PDO::PARAM_STR);
-      $stmt->execute();
+      $category = Database::getConnection()->prepare($query);
+      $category->bindParam(':id', $id, PDO::PARAM_INT);
+      $category->bindParam(':newName', $newName, PDO::PARAM_STR);
+      $category->execute();
 
       return json_encode(['success' => 'Categoría actualizada.']);
     } catch (PDOException $e) {
