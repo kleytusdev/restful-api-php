@@ -23,17 +23,15 @@ class Category
 
     $requestData = json_decode(file_get_contents('php://input'), true);
 
-    if (isset($requestData['name'])) {
-      $newName = $requestData['name'];
-    } else {
-      return json_encode(["error" => "El campo 'name' es obligatorio en la solicitud."]);
+    if (!isset($requestData['name']) || !preg_match('/^[a-zA-Z]+$/', $requestData['name'])) {
+      return json_encode(["error" => "El campo 'name' debe contener solo letras."]);
     }
 
     try {
-      $query = "UPDATE categories SET name = :newName WHERE id = :id";
+      $query = "UPDATE categories SET name = :name WHERE id = :id";
       $statement = Database::getConnection()->prepare($query);
       $statement->bindParam(':id', $id, PDO::PARAM_INT);
-      $statement->bindParam(':newName', $newName, PDO::PARAM_STR);
+      $statement->bindParam(':name', $requestData['name'], PDO::PARAM_STR);
       $statement->execute();
 
       return json_encode(['success' => 'Categoría actualizada.']);

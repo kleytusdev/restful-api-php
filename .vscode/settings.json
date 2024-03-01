@@ -4,6 +4,7 @@
     "global",
     "dependencies",
     "validation",
-    "category"
+    "category",
+    "model"
   ]
 }
