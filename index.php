@@ -8,5 +8,5 @@ require 'autoload.php';
 use App\Models\Category;
 use App\Models\Product;
 
-// echo Product::show();
-echo Category::update();
+echo Product::get();
+// echo Category::update();

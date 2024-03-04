@@ -5,6 +5,7 @@
     "dependencies",
     "validation",
     "category",
-    "model"
+    "model",
+    "env"
   ]
 }
