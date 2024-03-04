@@ -2,9 +2,9 @@
 
 namespace App\Core;
 
-use App\Utils\ValidateHttpMethod;
 use PDO;
 use Database\Database;
+use App\Utils\ValidateHttpMethod;
 
 /**
  * Clase base para modelos que representan entidades en la base de datos.
