@@ -12,7 +12,6 @@ use App\Utils\ValidateHttpMethod;
  */
 class Model
 {
-  private const HTTP_METHOD_GET = "GET";
 
   /**
    * @var int $id Identificador único de la entidad del modelo.
@@ -31,10 +30,48 @@ class Model
    */
   public static function get(): string
   {
-    ValidateHttpMethod::validateHttpMethod(self::HTTP_METHOD_GET);
-
     $statement = Database::getConnection()->query('SELECT * FROM ' . static::$table);
 
     return json_encode($statement->fetchAll(PDO::FETCH_ASSOC));
+  }
+
+  public static function add()
+  {
+    $sql = Database::getConnection()->prepare('DESCRIBE '. static::$table);
+
+    $sql->execute();
+
+    $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+    $columns = [];
+
+    foreach ($resultado as $index => $row) {
+
+      if ($index != 0) {
+
+        $columns[] = $row['Field'];
+      }
+    }
+
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    if (empty($data)) {
+      return "INGRESE DATOS";
+    }
+
+    $columnnames = implode(', ', $columns);
+    $variablecolumns = implode(', :', $columns);
+
+    $query = 'INSERT INTO '. static::$table .' ('. $columnnames .') VALUES (:'.$variablecolumns.')';
+    
+    $statement = Database::getConnection()->prepare($query);
+
+    foreach ($columns as $column) {
+      $statement->bindValue(':'. $column, $data[$column]);
+    }
+
+    $statement->execute();
+
+    return self::get();
   }
 }
