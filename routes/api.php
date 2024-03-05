@@ -1,7 +1,5 @@
 <?php
 
-namespace Routes;
-
 use App\Core\Route;
 use App\Core\RouteCollection;
 use App\Controllers\ProductController;

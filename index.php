@@ -2,6 +2,9 @@
 
 header('Content-Type: application/json');
 
-require 'vendor/autoload.php';
 require 'autoload.php';
-require 'app/Core/Dispatcher.php';
+require 'vendor/autoload.php';
+
+use App\Core\Dispatcher;
+
+(new Dispatcher(require 'routes/api.php'))->dispatch();

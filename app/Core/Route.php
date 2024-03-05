@@ -66,15 +66,49 @@ class Route
   }
 
   /**
-   * Crea un nuevo objeto Route a partir de una ruta URI y una especificación de acción del controlador.
-   *
    * @param string $uri La ruta URI para la ruta.
    * @param array $action La especificación de la acción del controlador (puede ser una cadena o un array).
    *
    * @return Route El objeto Route recién creado.
    */
+
+  /**
+   * @method static Route get(string $uri, array $action) Crea una ruta GET.
+   */
   public static function get(string $uri, array $action): Route
   {
     return new Route($uri, $action[0], $action[1], 'GET');
+  }
+
+  /**
+   * @method static Route post(string $uri, array $action) Crea una ruta POST.
+   */
+  public static function post(string $uri, array $action): Route
+  {
+    return new Route($uri, $action[0], $action[1], 'POST');
+  }
+
+  /**
+   * @method static Route patch(string $uri, array $action) Crea una ruta PATCH.
+   */
+  public static function patch(string $uri, array $action): Route
+  {
+    return new Route($uri, $action[0], $action[1], 'PATCH');
+  }
+
+  /**
+   * @method static Route put(string $uri, array $action) Crea una ruta PUT.
+   */
+  public static function put(string $uri, array $action): Route
+  {
+    return new Route($uri, $action[0], $action[1], 'PUT');
+  }
+
+  /**
+   * @method static Route delete(string $uri, array $action) Crea una ruta DELETE.
+   */
+  public static function delete(string $uri, array $action): Route
+  {
+    return new Route($uri, $action[0], $action[1], 'DELETE');
   }
 }
