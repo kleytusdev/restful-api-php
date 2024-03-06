@@ -20,7 +20,7 @@ use App\Controllers\UserController;
 $routes = new RouteCollection();
 
 $routes->addRoute(Route::get('/about', [UserController::class, 'getall']));
-$routes->addRoute(Route::post('/create',[UserController::class, 'create']));
+$routes->addRoute(Route::post('/create',[UserController::class, 'add']));
 $routes->addRoute(Route::get('/filtrado', [UserController::class, 'getById']));
 $routes->addRoute(Route::delete('/category', [UserController::class, 'delete']));
 

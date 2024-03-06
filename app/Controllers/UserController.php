@@ -6,7 +6,7 @@ use App\Models\User;
 
 class UserController
 {
-  public function create()
+  public function add()
   {
     $data = json_decode(file_get_contents('php://input'), true);
     
