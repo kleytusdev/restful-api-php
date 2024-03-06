@@ -17,7 +17,6 @@ class Dispatcher
 
     $route = $this->routes->getRouteByUri($url);
 
-
     if (!$route) {
       return $this->echoResponse('Ruta no encontrada');
     }
@@ -25,7 +24,7 @@ class Dispatcher
     if ($method !== $route->getMethodHttp()) {
       return $this->echoResponse('Método HTTP no permitido');
     }
-
+    
     $controllerClass = $route->getController(); 
     $controller = new $controllerClass();
     $controllerMethod = $route->getMethod();
@@ -39,6 +38,5 @@ class Dispatcher
     echo $message;
     exit();
   }
-}
 
 (new Dispatcher(require 'routes/api.php'))->dispatch();

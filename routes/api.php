@@ -1,7 +1,5 @@
 <?php
 
-namespace Routes;
-
 use App\Core\Route;
 use App\Core\RouteCollection;
 use App\Controllers\ProductController;
@@ -15,7 +13,6 @@ use App\Controllers\UserController;
 | Aquí es donde se registran las rutas API de la aplicación.
 |
 */
-
 
 $routes = new RouteCollection();
 
