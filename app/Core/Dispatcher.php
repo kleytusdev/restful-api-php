@@ -13,9 +13,10 @@ class Dispatcher
   public function dispatch()
   {
     $method = $_SERVER['REQUEST_METHOD'];
-    $url = explode('/', $_SERVER['REQUEST_URI'])[3];
+    $url = '/'.explode('/', $_SERVER['REQUEST_URI'])[3];
 
-    $route = $this->routes->getRouteByUri('/'.$url);
+    $route = $this->routes->getRouteByUri($url);
+
 
     if (!$route) {
       return $this->echoResponse('Ruta no encontrada');
@@ -25,7 +26,7 @@ class Dispatcher
       return $this->echoResponse('Método HTTP no permitido');
     }
 
-    $controllerClass = $route->getController();
+    $controllerClass = $route->getController(); 
     $controller = new $controllerClass();
     $controllerMethod = $route->getMethod();
 

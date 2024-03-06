@@ -5,6 +5,7 @@ namespace App\Core;
 use PDO;
 use Database\Database;
 use App\Utils\ValidateHttpMethod;
+use PDOException;
 
 /**
  * Clase base para modelos que representan entidades en la base de datos.
@@ -35,17 +36,17 @@ class Model
     return json_encode($statement->fetchAll(PDO::FETCH_ASSOC));
   }
 
-  public static function add()
+  public static function create(array $validData)
   {
     $sql = Database::getConnection()->prepare('DESCRIBE '. static::$table);
 
     $sql->execute();
 
-    $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
+    $dataColumns = $sql->fetchAll(PDO::FETCH_ASSOC);
 
     $columns = [];
 
-    foreach ($resultado as $index => $row) {
+    foreach ($dataColumns as $index => $row) {
 
       if ($index != 0) {
 
@@ -53,12 +54,15 @@ class Model
       }
     }
 
-    $data = json_decode(file_get_contents('php://input'), true);
+    foreach($validData as $column => $value){
 
-    if (empty($data)) {
-      return "INGRESE DATOS";
+      if (!in_array($column, $columns)){
+        return "Error el campo $column no existe";
+      }
+
     }
 
+    
     $columnnames = implode(', ', $columns);
     $variablecolumns = implode(', :', $columns);
 
@@ -67,11 +71,35 @@ class Model
     $statement = Database::getConnection()->prepare($query);
 
     foreach ($columns as $column) {
-      $statement->bindValue(':'. $column, $data[$column]);
+      $statement->bindValue(':'. $column, $validData[$column]);
     }
 
     $statement->execute();
 
     return self::get();
   }
+
+  public static function where(string $column, $value, string $operador){
+
+    if(!is_numeric($value)){
+      $value = "'".$value."'";
+    }
+
+    $statement = Database::getConnection()->query('SELECT * FROM ' . static::$table .' WHERE '.$column.' '.$operador.' '.$value);
+
+    return json_encode($statement->fetchAll(PDO::FETCH_ASSOC));
+  }
+
+  public static function delete(int $id){
+
+    try {
+      $statement = Database::getConnection()->query('DELETE FROM '.static::$table.' WHERE '.'id = '.$id);
+
+      $statement->execute();
+    }
+    catch (PDOException $e) {
+      echo "El id no existe ". $e;
+    }
+  }
+
 }
