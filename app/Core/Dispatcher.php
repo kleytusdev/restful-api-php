@@ -17,7 +17,6 @@ class Dispatcher
 
     $route = $this->routes->getRouteByUri($url);
 
-
     if (!$route) {
       return $this->echoResponse('Ruta no encontrada');
     }
@@ -39,6 +38,5 @@ class Dispatcher
     echo $message;
     exit();
   }
-}
-
+  
 (new Dispatcher(require 'routes/api.php'))->dispatch();

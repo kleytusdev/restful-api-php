@@ -17,6 +17,7 @@ class RouteCollection
   }
 
   public function getRouteByUri(string $uri): ?Route
+
 {
     foreach ($this->routes as $route) {
         if ($route->getUri() === $uri) {
