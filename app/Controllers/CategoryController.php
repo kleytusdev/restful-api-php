@@ -8,7 +8,7 @@ class CategoryController
 {
   public function index()
   {
-    return Category::where('id', '=', 1);
+    return Category::where('name', 'LIKE', 'C%');
   }
 
   public function store()

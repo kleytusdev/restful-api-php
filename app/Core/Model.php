@@ -106,14 +106,23 @@ class Model
    */
   public static function where(string $column, string $operator, mixed $value): void
   {
-    // Validar operadores permitidos (opcional)
+    // Validar operadores permitidos
     $allowedOperators = ['=', '<', '>', '<=', '>=', '!=', 'LIKE'];
-
     if (!in_array($operator, $allowedOperators)) {
-      throw new Exception("Operador no válido: {$operator}");
+      throw new Exception("Operador no válido: " . $operator);
     }
 
-    $statement = Database::getConnection()->query('SELECT * FROM ' . static::$table . ' WHERE ' . $column . ' ' . $operator . ' ' . $value);
+    // Prepara la consulta SELECT con la condición WHERE utilizando marcadores de posición.
+    $query = sprintf(
+      'SELECT * FROM %s WHERE %s %s :value',
+      static::$table,
+      $column,
+      $operator
+    );
+
+    $statement = Database::getConnection()->prepare($query);
+    $statement->bindValue(':value', $value, is_numeric($value) ? PDO::PARAM_INT : PDO::PARAM_STR);
+    $statement->execute();
 
     echo json_encode($statement->fetchAll(PDO::FETCH_ASSOC));
   }
