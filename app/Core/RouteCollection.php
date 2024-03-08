@@ -18,6 +18,12 @@ class RouteCollection
 
   public function getRouteByUri(string $uri): ?Route
   {
-    return array_filter($this->routes, fn ($route) => $route->getUri() === $uri)[0] ?? null;
+    foreach ($this->routes as $route) {
+      if ($route->getUri() === $uri && $route->getMethodHttp() === $_SERVER['REQUEST_METHOD']) {
+        return $route;
+      }
+    }
+
+    return null;
   }
 }

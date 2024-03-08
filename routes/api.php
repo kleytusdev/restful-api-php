@@ -3,6 +3,7 @@
 use App\Core\Route;
 use App\Core\RouteCollection;
 use App\Controllers\ProductController;
+use App\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,5 +17,9 @@ use App\Controllers\ProductController;
 $routes = new RouteCollection();
 
 $routes->addRoute(Route::get('/products', [ProductController::class, 'index']));
+$routes->addRoute(Route::post('/products', [ProductController::class, 'store']));
+
+$routes->addRoute(Route::get('/categories', [CategoryController::class, 'index']));
+$routes->addRoute(Route::post('/categories', [CategoryController::class, 'store']));
 
 return $routes;

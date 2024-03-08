@@ -10,17 +10,21 @@ class Dispatcher
     private RouteCollection $routes
   ) {
   }
+
   public function dispatch()
   {
     $method = $_SERVER['REQUEST_METHOD'];
     $url = $_SERVER['REQUEST_URI'];
+    $script_name = $_SERVER['SCRIPT_NAME'];
 
-    $route = $this->routes->getRouteByUri($url);
+    // Obtener la ruta sin "index.php"
+    $path = str_replace($script_name, '', $url);
+
+    $route = $this->routes->getRouteByUri($path);
 
     if (!$route) {
       return $this->echoResponse('Ruta no encontrada');
     }
-
     if ($method !== $route->getMethodHttp()) {
       return $this->echoResponse('Método HTTP no permitido');
     }
@@ -39,3 +43,5 @@ class Dispatcher
     exit();
   }
 }
+
+(new Dispatcher(require 'routes/api.php'))->dispatch();
