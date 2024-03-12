@@ -16,12 +16,35 @@ class RouteCollection
     return $this->routes;
   }
 
+  public function getParams(string $uri, Route $route){
+    $route_uri = $route->getUri();
+
+        if(strpos($route_uri, '{') !== false){
+          $route_uri = preg_replace('#{[a-zA-Z]+}#', '([a-zA-Z0-9])', $route_uri);
+        }
+        
+
+        if (preg_match("#^$route_uri$#", $uri, $matches)) {
+          $params = array_slice($matches, 1);
+
+          return $params;
+        }
+  }
+
   public function getRouteByUri(string $uri): ?Route
   {
     foreach ($this->routes as $route) {
-      if ($route->getUri() === $uri && $route->getMethodHttp() === $_SERVER['REQUEST_METHOD']) {
-        return $route;
-      }
+        $route_uri = $route->getUri();
+
+        if(strpos($route_uri, '{') !== false){
+          $route_uri = preg_replace('#{[a-zA-Z]+}#', '([a-zA-Z0-9])', $route_uri);
+        }
+        
+
+        if (preg_match("#^$route_uri$#", $uri)) {
+
+          return $route;
+        }
     }
 
     return null;

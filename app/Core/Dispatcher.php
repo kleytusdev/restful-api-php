@@ -29,11 +29,13 @@ class Dispatcher
       return $this->echoResponse('Método HTTP no permitido');
     }
 
+    $params = $this->routes->getParams($path, $route);
+
     $controllerClass = $route->getController();
     $controller = new $controllerClass();
     $controllerMethod = $route->getMethod();
 
-    $controller->$controllerMethod();
+    $controller->$controllerMethod(...$params);
   }
 
   private function echoResponse(string $message): void
