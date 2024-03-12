@@ -36,6 +36,11 @@ class RouteCollection
     foreach ($this->routes as $route) {
         $route_uri = $route->getUri();
 
+
+        if($route->getMethodHttp() !== $_SERVER['REQUEST_METHOD']){
+          continue;
+        }
+
         if(strpos($route_uri, '{') !== false){
           $route_uri = preg_replace('#{[a-zA-Z]+}#', '([a-zA-Z0-9])', $route_uri);
         }
