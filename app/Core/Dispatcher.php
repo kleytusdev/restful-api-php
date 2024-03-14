@@ -3,9 +3,11 @@
 namespace App\Core;
 
 use App\Core\RouteCollection;
+use Database\Database;
 use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use PDO;
 
 class Dispatcher
 {
@@ -73,7 +75,23 @@ class Dispatcher
       ]));
     }
 
-    return $decodedToken;
+    if (!$this->validateToken($decodedToken)) {
+      http_response_code(403);
+      die(json_encode([
+        'message' => 'Unauthorized',
+        'status' => 'error'
+      ]));
+    }
+  }
+
+  private function validateToken(object $decodedToken): bool|int
+  {
+    $query = "SELECT * FROM users WHERE id = :id";
+    $statement = Database::getConnection()->prepare($query);
+    $statement->bindParam(":id", $decodedToken->data->user_id, PDO::PARAM_INT);
+    $statement->execute();
+
+    return $statement->fetchColumn();
   }
 }
 
