@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\AuthenticatedController;
 use App\Core\Route;
 use App\Core\RouteCollection;
 use App\Controllers\ProductController;
@@ -15,6 +16,8 @@ use App\Controllers\CategoryController;
 */
 
 $routes = new RouteCollection();
+
+$routes->addRoute(Route::post('/auth', [AuthenticatedController::class, 'store']));
 
 $routes->addRoute(Route::get('/products', [ProductController::class, 'index']));
 $routes->addRoute(Route::post('/products', [ProductController::class, 'store']));
