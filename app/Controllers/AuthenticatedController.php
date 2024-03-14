@@ -5,6 +5,7 @@ namespace App\Controllers;
 use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use App\Models\Product;
 
 class AuthenticatedController
 {
@@ -20,10 +21,12 @@ class AuthenticatedController
     $key = $_ENV['API_SECRET_KEY'];
     $payload = [
       'exp' => $now + 3600,
-      'data' => '1',
+      'data' => 1,
     ];
 
     $jwt = JWT::encode($payload, $key, 'HS256');
-    print_r($jwt);
+    $array = ["token" => $jwt];
+
+    print_r($array);
   }
 }
