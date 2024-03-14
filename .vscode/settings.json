@@ -8,6 +8,7 @@
     "model",
     "env",
     "routes",
-    "auth"
+    "auth",
+    "user"
   ]
 }

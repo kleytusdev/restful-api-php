@@ -16,7 +16,7 @@ class Dispatcher
 
   public function dispatch()
   {
-    $this->getToken();
+    // $this->getToken();
 
     $method = $_SERVER['REQUEST_METHOD'];
     $url = $_SERVER['REQUEST_URI'];
@@ -48,33 +48,33 @@ class Dispatcher
     exit();
   }
 
-  private function getToken()
-  {
-    $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
-    $dotenv->load();
+  // private function getToken()
+  // {
+  //   $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
+  //   $dotenv->load();
 
-    $headers = apache_request_headers();
+  //   $headers = apache_request_headers();
 
-    $authorization = $headers['Authorization'] ?? die(json_encode([
-      'message' => 'Unauthenticated',
-      'status' => 'error'
-    ]));
+  //   $authorization = $headers['Authorization'] ?? die(json_encode([
+  //     'message' => 'Unauthenticated',
+  //     'status' => 'error'
+  //   ]));
 
-    $authorizationArray = explode(' ', $authorization);
-    $token = $authorizationArray[1];
+  //   $authorizationArray = explode(' ', $authorization);
+  //   $token = $authorizationArray[1];
 
-    try {
-      $decodedToken = JWT::decode($token, new Key($_ENV['API_SECRET_KEY'], 'HS256'));
-    } catch (\Throwable $th) {
-      http_response_code(500);
-      die(json_encode([
-        'message' => $th->getMessage(),
-        'status' => 'error'
-      ]));
-    }
+  //   try {
+  //     $decodedToken = JWT::decode($token, new Key($_ENV['API_SECRET_KEY'], 'HS256'));
+  //   } catch (\Throwable $th) {
+  //     http_response_code(500);
+  //     die(json_encode([
+  //       'message' => $th->getMessage(),
+  //       'status' => 'error'
+  //     ]));
+  //   }
 
-    return $decodedToken;
-  }
+  //   return $decodedToken;
+  // }
 }
 
 (new Dispatcher(require 'routes/api.php'))->dispatch();

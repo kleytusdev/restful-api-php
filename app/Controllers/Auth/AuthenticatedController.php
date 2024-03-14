@@ -2,29 +2,45 @@
 
 namespace App\Controllers\Auth;
 
+use Database\Database;
 use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
+use PDO;
 
 class AuthenticatedController
 {
-  public function __construct(
-  ) {
-    $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
+  public function __construct()
+  {
+    $dotenv = Dotenv::createImmutable(__DIR__ . '/../../../');
     $dotenv->load();
   }
 
   public function store()
   {
-    $now = strtotime('now');
-    $key = $_ENV['API_SECRET_KEY'];
-    $payload = [
-      'exp' => $now + 3600,
-      'data' => 1,
-    ];
+    $data = json_decode(file_get_contents("php://input"), true);
 
-    $jwt = JWT::encode($payload, $key, 'HS256');
-    $array = ["token" => $jwt];
+    $query = "SELECT * FROM users WHERE email = :email AND password = :password";
+    $statement = Database::getConnection()->prepare($query);
+    $statement->bindParam(":email", $data['email']);
+    $statement->bindParam(":password", $data['password']);
+    $statement->execute();
 
-    print_r($array);
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+    if ($user) {
+      $now = strtotime('now');
+      $key = $_ENV['API_SECRET_KEY'];
+      $payload = [
+        'exp' => $now + 3600,
+        'data' => $user['id'],
+      ];
+
+      $token = JWT::encode($payload, $key, 'HS256');
+
+      die(json_encode(['token' => $token]));
+    } else {
+      http_response_code(401);
+      die(json_encode(['message' => 'Usuario incorrecto.']));
+    }
   }
 }
