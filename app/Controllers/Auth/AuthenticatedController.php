@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Auth;
 
 use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
