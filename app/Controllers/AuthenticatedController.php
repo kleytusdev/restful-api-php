@@ -4,8 +4,6 @@ namespace App\Controllers;
 
 use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-use App\Models\Product;
 
 class AuthenticatedController
 {
