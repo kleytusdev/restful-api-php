@@ -16,12 +16,14 @@ class Route
    * @param string $controller El nombre de la clase del controlador.
    * @param string $method El nombre del método dentro de la clase del controlador.
    * @param string $methodHttp El método HTTP (por ejemplo, GET, POST, PUT, etc.).
+   * @param boolean $auth Valida si la ruta requiere de autenticación.
    */
   public function __construct(
     private string $uri,
     private string $controller,
     private string $method,
-    private string $methodHttp
+    private string $methodHttp,
+    private bool $auth
   ) {
   }
 
@@ -66,6 +68,16 @@ class Route
   }
 
   /**
+   * Recupera si la ruta requiere de autenticación.
+   *
+   * @return bool La autenticación.
+   */
+  public function getAuth(): bool
+  {
+    return $this->auth;
+  }
+
+  /**
    * @param string $uri La ruta URI para la ruta.
    * @param array $action La especificación de la acción del controlador (puede ser una cadena o un array).
    *
@@ -75,40 +87,40 @@ class Route
   /**
    * @method static Route get(string $uri, array $action) Crea una ruta GET.
    */
-  public static function get(string $uri, array $action): Route
+  public static function get(string $uri, array $action, array $auth = []): Route
   {
-    return new Route($uri, $action[0], $action[1], 'GET');
+    return new Route($uri, $action[0], $action[1], 'GET', $auth['auth'] ?? false);
   }
 
   /**
    * @method static Route post(string $uri, array $action) Crea una ruta POST.
    */
-  public static function post(string $uri, array $action): Route
+  public static function post(string $uri, array $action, array $auth = []): Route
   {
-    return new Route($uri, $action[0], $action[1], 'POST');
+    return new Route($uri, $action[0], $action[1], 'POST', $auth['auth'] ?? false);
   }
 
   /**
    * @method static Route patch(string $uri, array $action) Crea una ruta PATCH.
    */
-  public static function patch(string $uri, array $action): Route
+  public static function patch(string $uri, array $action, array $auth = []): Route
   {
-    return new Route($uri, $action[0], $action[1], 'PATCH');
+    return new Route($uri, $action[0], $action[1], 'PATCH', $auth['auth'] ?? false);
   }
 
   /**
    * @method static Route put(string $uri, array $action) Crea una ruta PUT.
    */
-  public static function put(string $uri, array $action): Route
+  public static function put(string $uri, array $action, array $auth = []): Route
   {
-    return new Route($uri, $action[0], $action[1], 'PUT');
+    return new Route($uri, $action[0], $action[1], 'PUT', $auth['auth'] ?? false);
   }
 
   /**
    * @method static Route delete(string $uri, array $action) Crea una ruta DELETE.
    */
-  public static function delete(string $uri, array $action): Route
+  public static function delete(string $uri, array $action, array $auth = []): Route
   {
-    return new Route($uri, $action[0], $action[1], 'DELETE');
+    return new Route($uri, $action[0], $action[1], 'DELETE', $auth['auth'] ?? false);
   }
 }

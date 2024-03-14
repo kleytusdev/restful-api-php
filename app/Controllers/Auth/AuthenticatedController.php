@@ -32,7 +32,9 @@ class AuthenticatedController
       $key = $_ENV['API_SECRET_KEY'];
       $payload = [
         'exp' => $now + 3600,
-        'data' => $user['id'],
+        'data' => [
+          'user_id' => $user['id'],
+        ],
       ];
 
       $token = JWT::encode($payload, $key, 'HS256');
